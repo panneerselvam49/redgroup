@@ -55,7 +55,5 @@ export default async function PropertyDetailPage({
 	params: Promise<Params>;
 }) {
 	const { id } = await params;
-	// We pass the id to a client component that handles interactivity
-	// (inquiry form, delete/edit buttons based on auth state)
 	return <PropertyDetailClient propertyId={Number(id)} />;
 }
