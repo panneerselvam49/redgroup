@@ -14,7 +14,6 @@ export async function register(
 	try {
 		const { name, email, password } = registerSchema.parse(req.body);
 
-		// Check for existing user before attempting insert (better UX than catching constraint error)
 		const existing = await User.findOne({ where: { email } });
 		if (existing) {
 			throw new ApiError(409, "An account with this email already exists");
@@ -46,7 +45,6 @@ export async function login(
 
 		const user = await User.findOne({ where: { email } });
 
-		// Use a generic message — don't reveal whether the email exists
 		if (!user) {
 			throw new ApiError(401, "Invalid email or password");
 		}

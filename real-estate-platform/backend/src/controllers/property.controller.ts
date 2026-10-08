@@ -16,7 +16,7 @@ export async function createProperty(
 ): Promise<void> {
 	try {
 		const data = createPropertySchema.parse(req.body);
-		const userId = req.user!.userId; // Always from JWT, never from request body
+		const userId = req.user!.userId;
 
 		const property = await Property.create({ ...data, userId });
 
@@ -117,7 +117,7 @@ export async function getPropertyById(
 				{
 					model: User,
 					as: "owner",
-					attributes: ["id", "name", "email"], // show email for contact; never password
+					attributes: ["id", "name", "email"],
 				},
 			],
 		});
@@ -183,7 +183,6 @@ export async function updateProperty(
 			throw new ApiError(404, "Property not found");
 		}
 
-		// Ownership check — userId comes from JWT, never from the request body
 		if (property.userId !== userId) {
 			throw new ApiError(403, "You are not authorized to edit this property");
 		}

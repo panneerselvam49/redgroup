@@ -11,9 +11,8 @@ export async function createInquiry(
 ): Promise<void> {
 	try {
 		const { propertyId, message } = createInquirySchema.parse(req.body);
-		const userId = req.user!.userId; // Always from JWT
+		const userId = req.user!.userId; 
 
-		// Fetch the property to get ownerId and verify it exists
 		const property = await Property.findByPk(propertyId, {
 			attributes: ["id", "userId"],
 		});
@@ -27,7 +26,6 @@ export async function createInquiry(
 			throw new ApiError(400, "You cannot send an inquiry to your own property");
 		}
 
-		// Application-level duplicate check (gives a nicer error message than DB constraint)
 		const existing = await Inquiry.findOne({
 			where: { propertyId, userId },
 		});
@@ -35,7 +33,6 @@ export async function createInquiry(
 			throw new ApiError(409, "You have already sent an inquiry for this property");
 		}
 
-		// ownerId is taken from the property record — never trusted from the client
 		const inquiry = await Inquiry.create({
 			propertyId,
 			userId,
