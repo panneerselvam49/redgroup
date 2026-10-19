@@ -1,6 +1,3 @@
-// Shared TypeScript types for property data.
-// These mirror the backend model — keeping them in sync is important.
-
 export type PropertyType = "apartment" | "villa" | "house" | "plot";
 
 export interface PropertyOwner {
